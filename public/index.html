@@ -45,7 +45,7 @@
     .banner {
       width: 100%;
       background: var(--red);
-      padding: 16px 20px;
+      padding: 24px 20px;
       display: flex;
       justify-content: center;
       position: relative;
@@ -66,10 +66,10 @@
     }
 
     .banner__logo {
-      height: 64px;
+      height: 120px;
       position: relative;
       z-index: 1;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25));
     }
 
     /* ============ CONTENEUR ============ */
@@ -110,15 +110,21 @@
     .header__badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       margin-top: 14px;
-      padding: 6px 16px;
+      padding: 8px 18px 8px 8px;
       background: linear-gradient(135deg, #7B2FBE, #9B4FDE);
-      border-radius: 24px;
-      font-size: 0.78rem;
+      border-radius: 28px;
+      font-size: 0.82rem;
       font-weight: 700;
       color: var(--white);
       letter-spacing: 0.02em;
+    }
+
+    .header__badge-logo {
+      height: 34px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
     }
 
     /* ============ CARTE DE DON ============ */
@@ -326,7 +332,7 @@
       .header__title { font-size: 1.35rem; }
       .amounts__btn { padding: 12px 6px; font-size: 1rem; }
       .card { padding: 22px 16px; }
-      .banner__logo { height: 52px; }
+      .banner__logo { height: 90px; }
     }
   </style>
 </head>
@@ -346,6 +352,7 @@
         pour les personnes en situation de handicap.
       </p>
       <span class="header__badge">
+        <img src="/logo-ailes-charlotte.png" alt="" class="header__badge-logo">
         Au profit des Ailes de Charlotte
       </span>
     </header>
