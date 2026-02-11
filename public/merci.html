@@ -5,101 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Merci ! — Grand Amour Festival</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --coral: #E8634A;
-      --midnight: #1A1A2E;
-      --text: #2C2C44;
-      --text-light: #7A7A95;
-      --bg: #FFFAF7;
-      --white: #FFFFFF;
-      --green: #22C55E;
-      --green-light: #ECFDF5;
-      --radius: 16px;
-    }
+    :root { --red: #D42027; --pink: #E84B8A; --hot-pink: #FF2D78; --cream: #FFF5EE; --text: #2A1215; --text-light: #8C5A60; --white: #FFFFFF; --yellow: #FFD700; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Outfit', sans-serif;
-      background: var(--bg);
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
       color: var(--text);
       min-height: 100dvh;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 24px;
     }
-    .container {
-      text-align: center;
-      max-width: 420px;
-      animation: fadeUp 0.6s ease-out;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .banner { width: 100%; background: var(--red); padding: 16px 20px; display: flex; justify-content: center; }
+    .banner__logo { height: 64px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2)); }
+    .container { text-align: center; max-width: 420px; padding: 40px 24px; animation: fadeUp 0.6s ease-out; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .check {
-      width: 80px;
-      height: 80px;
-      background: var(--green-light);
+      width: 88px; height: 88px;
+      background: linear-gradient(135deg, var(--red), var(--hot-pink));
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 24px;
-      font-size: 40px;
+      font-size: 42px; color: var(--white);
       animation: pop 0.5s ease 0.2s both;
+      box-shadow: 0 8px 24px rgba(212,32,39,0.3);
     }
-    @keyframes pop {
-      0% { transform: scale(0); }
-      70% { transform: scale(1.15); }
-      100% { transform: scale(1); }
-    }
+    @keyframes pop { 0% { transform: scale(0); } 70% { transform: scale(1.15); } 100% { transform: scale(1); } }
     h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2rem;
-      color: var(--midnight);
-      margin-bottom: 12px;
+      font-family: 'Dela Gothic One', sans-serif;
+      font-size: 1.8rem; color: var(--red);
+      margin-bottom: 14px; text-transform: uppercase; line-height: 1.2;
     }
-    p {
-      font-size: 1rem;
-      color: var(--text-light);
-      line-height: 1.6;
-      margin-bottom: 8px;
-    }
+    p { font-size: 1rem; color: var(--text-light); line-height: 1.6; margin-bottom: 8px; }
     .cta {
-      display: inline-block;
-      margin-top: 28px;
-      padding: 14px 32px;
-      background: var(--coral);
-      color: var(--white);
-      text-decoration: none;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: all 0.2s;
+      display: inline-block; margin-top: 28px; padding: 14px 32px;
+      background: linear-gradient(135deg, var(--red), var(--hot-pink));
+      color: var(--white); text-decoration: none; border-radius: 12px;
+      font-family: 'Dela Gothic One', sans-serif; font-size: 0.9rem;
+      text-transform: uppercase; letter-spacing: 0.03em; transition: all 0.2s;
     }
-    .cta:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(232,99,74,0.3);
-    }
-    .note {
-      margin-top: 20px;
-      font-size: 0.82rem;
-      color: var(--text-light);
-    }
+    .cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,32,39,0.35); }
+    .note { margin-top: 20px; font-size: 0.82rem; color: var(--text-light); }
   </style>
 </head>
 <body>
+  <div class="banner">
+    <img src="/logo-festival.png" alt="Grand Amour Festival" class="banner__logo">
+  </div>
   <div class="container">
     <div class="check">✓</div>
     <h1>Merci pour votre<br>générosité !</h1>
-    <p>
-      Votre don a bien été enregistré.<br>
-      Grâce à vous, le Grand Amour Festival<br>
-      continue de faire vivre la solidarité.
-    </p>
-    <p>❤️ L'équipe des Ailes de Charlotte</p>
+    <p>Votre don a bien été enregistré.<br>Grâce à vous, le Grand Amour Festival<br>continue de faire vivre la solidarité.</p>
+    <p style="font-size: 1.2rem;">❤️ L'équipe des Ailes de Charlotte</p>
     <a class="cta" href="/">Faire un autre don</a>
     <p class="note">Vous recevrez un reçu par email de la part de HelloAsso.</p>
   </div>
