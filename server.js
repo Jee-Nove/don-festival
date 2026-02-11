@@ -167,6 +167,20 @@ app.post('/api/creer-don', async (req, res) => {
           returnUrl: `${CONFIG.BASE_URL}/merci.html`,
           // C'est un don → true (important pour la conformité fiscale)
           containsDonation: true,
+          // Pré-remplissage des coordonnées du donateur
+          // → Permet de sauter l'étape "Informations du payeur" sur HelloAsso
+          // → Le donateur arrive directement sur la page de paiement CB
+          // ⚠️ Conséquence : aucun reçu fiscal ne sera délivré au donateur réel
+          payer: {
+            firstName: 'Donateur',
+            lastName: 'Festival',
+            email: `don+${Date.now()}@grandamourfestival.fr`,
+            dateOfBirth: '1980-01-01',
+            address: '1 place du Festival',
+            city: 'Arles',
+            zipCode: '13200',
+            country: 'FRA',
+          },
           // Metadata : données perso qu'on récupèrera dans le webhook
           // Utile pour tracer le don côté ton système
           metadata: {
