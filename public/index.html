@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faire un don — Grand Amour Festival</title>
+  <meta name="description" content="Soutenez Les Ailes de Charlotte en faisant un don lors du Grand Amour Festival">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ================================================================
+       VARIABLES — Palette chaleureuse festival / caritatif
+       ================================================================ */
+    :root {
+      --coral: #E8634A;
+      --coral-dark: #D14E36;
+      --coral-light: #FDEAE6;
+      --gold: #E8A838;
+      --gold-light: #FDF3E0;
+      --midnight: #1A1A2E;
+      --slate: #3D3D5C;
+      --text: #2C2C44;
+      --text-light: #7A7A95;
+      --bg: #FFFAF7;
+      --white: #FFFFFF;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    /* ================================================================
+       RESET & BASE
+       ================================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* ================================================================
+       FOND DÉCORATIF — Ambiance festival
+       ================================================================ */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -40%;
+      left: -20%;
+      width: 140%;
+      height: 80%;
+      background: radial-gradient(ellipse at 30% 50%, rgba(232, 99, 74, 0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 30%, rgba(232, 168, 56, 0.06) 0%, transparent 50%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ================================================================
+       CONTENEUR PRINCIPAL
+       ================================================================ */
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 24px 20px 40px;
+      animation: fadeUp 0.6s ease-out;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ================================================================
+       EN-TÊTE
+       ================================================================ */
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .header__emoji {
+      font-size: 48px;
+      margin-bottom: 12px;
+      display: block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .header__title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--midnight);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .header__subtitle {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .header__asso {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      padding: 6px 14px;
+      background: var(--coral-light);
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--coral-dark);
+    }
+
+    /* ================================================================
+       CARTE DE DON
+       ================================================================ */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .card__label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--slate);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    /* --- Montants prédéfinis --- */
+    .amounts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .amounts__btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 8px;
+      border: 2px solid #E8E8F0;
+      border-radius: var(--radius-sm);
+      background: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .amounts__btn:hover {
+      border-color: var(--coral);
+      background: var(--coral-light);
+    }
+
+    .amounts__btn.active {
+      border-color: var(--coral);
+      background: var(--coral);
+      color: var(--white);
+      transform: scale(1.03);
+      box-shadow: 0 4px 12px rgba(232, 99, 74, 0.3);
+    }
+
+    /* --- Montant libre --- */
+    .custom-amount {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .custom-amount__input {
+      width: 100%;
+      padding: 14px 40px 14px 16px;
+      border: 2px solid #E8E8F0;
+      border-radius: var(--radius-sm);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .custom-amount__input::placeholder {
+      color: var(--text-light);
+      font-weight: 400;
+    }
+
+    .custom-amount__input:focus {
+      border-color: var(--coral);
+    }
+
+    .custom-amount__currency {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-light);
+      pointer-events: none;
+    }
+
+    /* --- Bouton principal --- */
+    .donate-btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: var(--coral);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .donate-btn:hover:not(:disabled) {
+      background: var(--coral-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(232, 99, 74, 0.35);
+    }
+
+    .donate-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .donate-btn:disabled {
+      opacity: 0.7;
+      cursor: wait;
+    }
+
+    .donate-btn__text { transition: opacity 0.2s; }
+    .donate-btn--loading .donate-btn__text { opacity: 0; }
+    .donate-btn__spinner {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    .donate-btn--loading .donate-btn__spinner { display: block; }
+
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* --- Message d'erreur --- */
+    .error-msg {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: #FEF2F2;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: #DC2626;
+      display: none;
+    }
+
+    .error-msg.visible {
+      display: block;
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    /* ================================================================
+       INFO HELLOASSO — Contribution volontaire
+       ================================================================ */
+    .info {
+      margin-top: 20px;
+      padding: 16px;
+      background: var(--gold-light);
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: var(--slate);
+    }
+
+    .info__icon {
+      margin-right: 4px;
+    }
+
+    /* ================================================================
+       FOOTER — Sécurité & crédits
+       ================================================================ */
+    .footer {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 0.78rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    .footer__secure {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 500;
+    }
+
+    /* ================================================================
+       RESPONSIVE — Petits écrans
+       ================================================================ */
+    @media (max-width: 360px) {
+      .header__title {
+        font-size: 1.65rem;
+      }
+      .amounts {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .amounts__btn {
+        padding: 12px 6px;
+        font-size: 1rem;
+      }
+      .card {
+        padding: 22px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- ========== EN-TÊTE ========== -->
+    <header class="header">
+      <span class="header__emoji" role="img" aria-label="coeur musique">🎶</span>
+      <h1 class="header__title">Soutenez le<br>Grand Amour Festival</h1>
+      <p class="header__subtitle">
+        Chaque don compte pour faire vivre<br>la musique et la solidarité.
+      </p>
+      <span class="header__asso">
+        ❤️ Au profit des Ailes de Charlotte
+      </span>
+    </header>
+
+    <!-- ========== CARTE DE DON ========== -->
+    <div class="card">
+      <p class="card__label">Choisissez votre montant</p>
+
+      <!-- Montants prédéfinis -->
+      <div class="amounts">
+        <button class="amounts__btn" data-amount="5">5 €</button>
+        <button class="amounts__btn" data-amount="10">10 €</button>
+        <button class="amounts__btn active" data-amount="20">20 €</button>
+        <button class="amounts__btn" data-amount="50">50 €</button>
+        <button class="amounts__btn" data-amount="100">100 €</button>
+        <button class="amounts__btn" data-amount="custom">Libre</button>
+      </div>
+
+      <!-- Montant personnalisé (caché par défaut) -->
+      <div class="custom-amount" id="customAmountWrapper" style="display: none;">
+        <input
+          type="number"
+          id="customAmountInput"
+          class="custom-amount__input"
+          placeholder="Votre montant"
+          min="1"
+          max="10000"
+          step="1"
+          inputmode="numeric"
+        >
+        <span class="custom-amount__currency">€</span>
+      </div>
+
+      <!-- Bouton de don -->
+      <button class="donate-btn" id="donateBtn">
+        <span class="donate-btn__text">Faire un don de 20 €</span>
+        <span class="donate-btn__spinner"></span>
+      </button>
+
+      <!-- Message d'erreur -->
+      <div class="error-msg" id="errorMsg"></div>
+    </div>
+
+    <!-- ========== INFO CONTRIBUTION VOLONTAIRE ========== -->
+    <!-- OBLIGATOIRE selon le guide d'intégration HelloAsso -->
+    <div class="info">
+      <span class="info__icon">🤝</span>
+      <strong>100% de votre don</strong> sera versé aux Ailes de Charlotte.
+      HelloAsso est une solution de paiement gratuite pour les associations.
+      Vous pourrez soutenir leur action en laissant une contribution
+      volontaire au moment du paiement.
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+      <p class="footer__secure">🔒 Paiement sécurisé par HelloAsso</p>
+      <p>Les Ailes de Charlotte — Grand Amour Festival</p>
+    </footer>
+  </div>
+
+  <!-- ================================================================
+       JAVASCRIPT — Logique de la page
+       ================================================================ -->
+  <script>
+    // Éléments du DOM
+    const amountBtns = document.querySelectorAll('.amounts__btn');
+    const customWrapper = document.getElementById('customAmountWrapper');
+    const customInput = document.getElementById('customAmountInput');
+    const donateBtn = document.getElementById('donateBtn');
+    const donateBtnText = donateBtn.querySelector('.donate-btn__text');
+    const errorMsg = document.getElementById('errorMsg');
+
+    // État
+    let selectedAmount = 20; // Montant par défaut
+    let isCustom = false;
+
+    // -----------------------------------------------------------------
+    // SÉLECTION DU MONTANT
+    // -----------------------------------------------------------------
+    amountBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Retirer la classe "active" de tous les boutons
+        amountBtns.forEach(b => b.classList.remove('active'));
+        // Ajouter la classe "active" au bouton cliqué
+        btn.classList.add('active');
+
+        if (btn.dataset.amount === 'custom') {
+          // Montant libre sélectionné
+          isCustom = true;
+          customWrapper.style.display = 'block';
+          customInput.focus();
+          updateButtonText();
+        } else {
+          // Montant prédéfini
+          isCustom = false;
+          selectedAmount = parseInt(btn.dataset.amount);
+          customWrapper.style.display = 'none';
+          updateButtonText();
+        }
+
+        hideError();
+      });
+    });
+
+    // Mise à jour du montant libre quand on tape
+    customInput.addEventListener('input', () => {
+      selectedAmount = parseFloat(customInput.value) || 0;
+      updateButtonText();
+    });
+
+    // -----------------------------------------------------------------
+    // MISE À JOUR DU BOUTON
+    // -----------------------------------------------------------------
+    function updateButtonText() {
+      const amount = isCustom ? (parseFloat(customInput.value) || 0) : selectedAmount;
+      if (amount > 0) {
+        donateBtnText.textContent = `Faire un don de ${amount} €`;
+      } else {
+        donateBtnText.textContent = 'Faire un don';
+      }
+    }
+
+    // -----------------------------------------------------------------
+    // GESTION DES ERREURS
+    // -----------------------------------------------------------------
+    function showError(message) {
+      errorMsg.textContent = message;
+      errorMsg.classList.add('visible');
+    }
+
+    function hideError() {
+      errorMsg.classList.remove('visible');
+    }
+
+    // -----------------------------------------------------------------
+    // ENVOI DU DON
+    // -----------------------------------------------------------------
+    donateBtn.addEventListener('click', async () => {
+      hideError();
+
+      // Récupérer le montant final
+      const montant = isCustom ? (parseFloat(customInput.value) || 0) : selectedAmount;
+
+      // Vérifications
+      if (montant < 1) {
+        showError('Le montant minimum est de 1 €.');
+        return;
+      }
+      if (montant > 10000) {
+        showError('Le montant maximum est de 10 000 €.');
+        return;
+      }
+
+      // Passer en mode "chargement"
+      donateBtn.disabled = true;
+      donateBtn.classList.add('donate-btn--loading');
+
+      try {
+        // Appeler NOTRE serveur pour créer le checkout chez HelloAsso
+        const response = await fetch('/api/creer-don', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ montant }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.erreur || 'Erreur lors de la création du don.');
+        }
+
+        // REDIRECTION vers la page de paiement HelloAsso !
+        // L'utilisateur quitte notre site pour payer sur HelloAsso,
+        // puis sera redirigé vers notre page "merci" ou "erreur".
+        window.location.href = data.redirectUrl;
+
+      } catch (error) {
+        showError(error.message);
+        donateBtn.disabled = false;
+        donateBtn.classList.remove('donate-btn--loading');
+      }
+    });
+  </script>
+
+</body>
+</html>

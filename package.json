@@ -1,0 +1,13 @@
+{
+  "name": "don-festival",
+  "version": "1.0.0",
+  "description": "Page de don pour le Grand Amour Festival - Les Ailes de Charlotte via HelloAsso Checkout",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
