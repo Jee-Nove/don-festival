@@ -8,6 +8,13 @@ const PORT = process.env.PORT || 3000;
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.use(express.json());
+
+// Apple Pay domain verification
+app.get('/.well-known/apple-developer-merchantid-domain-association', (req, res) => {
+  res.set('Content-Type', 'text/plain');
+  res.send(process.env.APPLE_PAY_DOMAIN_VERIFICATION || '');
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Return publishable key to frontend
