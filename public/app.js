@@ -1,6 +1,8 @@
 let stripe;
 let elements;
 let paymentElement;
+let paymentElementReady = false;
+let debounceTimer = null;
 
 const amountBtns = document.querySelectorAll('.amounts__btn');
 const customInput = document.getElementById('customAmountInput');
@@ -8,33 +10,81 @@ const customWrapper = document.getElementById('customAmountWrapper');
 const donateBtn = document.getElementById('donateBtn');
 const donateBtnText = donateBtn.querySelector('.donate-btn__text');
 const errorMsg = document.getElementById('errorMsg');
+const paymentElementDiv = document.getElementById('payment-element');
 
 let selectedAmount = 5;
 
-// Init Stripe
+const APPEARANCE = {
+  theme: 'night',
+  variables: {
+    colorPrimary: '#b026ff',
+    colorBackground: '#1a1a2e',
+    colorText: '#ffffff',
+    colorDanger: '#ff2d95',
+    borderRadius: '8px',
+  },
+};
+
+// Init Stripe (just load the key, don't create elements yet)
 async function initStripe() {
   const res = await fetch('/api/config');
   const { publishableKey } = await res.json();
   stripe = Stripe(publishableKey);
-  elements = stripe.elements({
-    appearance: {
-      theme: 'night',
-      variables: {
-        colorPrimary: '#b026ff',
-        colorBackground: '#1a1a2e',
-        colorText: '#ffffff',
-        colorDanger: '#ff2d95',
-        borderRadius: '8px',
-      },
-    },
-  });
-  paymentElement = elements.create('payment');
-  paymentElement.mount('#payment-element');
+  // Mount Payment Element for the default selected amount
+  mountPaymentElement(selectedAmount);
 }
 
 initStripe();
 
-// Amount selection
+// Create PaymentIntent + mount Payment Element for a given amount
+async function mountPaymentElement(amountEuros) {
+  if (!stripe) return;
+  if (amountEuros < 1 || amountEuros > 1000) return;
+
+  // Show loading state
+  paymentElementReady = false;
+  donateBtn.disabled = true;
+  paymentElementDiv.innerHTML = '<div class="pe-loader"><div class="pe-spinner"></div></div>';
+
+  // Destroy previous elements
+  if (elements) {
+    elements = null;
+    paymentElement = null;
+  }
+
+  try {
+    // Create PaymentIntent on server
+    const res = await fetch('/api/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: Math.round(amountEuros * 100) }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erreur serveur.');
+
+    // Create new Elements with clientSecret
+    elements = stripe.elements({
+      clientSecret: data.clientSecret,
+      appearance: APPEARANCE,
+    });
+
+    paymentElement = elements.create('payment');
+
+    paymentElement.on('ready', () => {
+      paymentElementReady = true;
+      donateBtn.disabled = false;
+    });
+
+    paymentElementDiv.innerHTML = '';
+    paymentElement.mount('#payment-element');
+  } catch (err) {
+    paymentElementDiv.innerHTML = '';
+    showError(err.message);
+  }
+}
+
+// Amount button selection
 amountBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     amountBtns.forEach(b => b.classList.remove('active'));
@@ -44,9 +94,11 @@ amountBtns.forEach(btn => {
     customWrapper.style.display = 'none';
     updateButtonText();
     hideError();
+    mountPaymentElement(selectedAmount);
   });
 });
 
+// Custom amount input with 500ms debounce
 customInput.addEventListener('input', () => {
   const val = parseFloat(customInput.value);
   if (val > 0) {
@@ -54,6 +106,11 @@ customInput.addEventListener('input', () => {
     selectedAmount = val;
   }
   updateButtonText();
+
+  clearTimeout(debounceTimer);
+  if (val >= 1 && val <= 1000) {
+    debounceTimer = setTimeout(() => mountPaymentElement(val), 500);
+  }
 });
 
 customInput.addEventListener('focus', () => {
@@ -78,7 +135,8 @@ function getAmount() {
 function updateButtonText() {
   const amount = getAmount();
   donateBtnText.textContent = amount > 0 ? `Donner ${amount} €` : 'Donner';
-  donateBtn.disabled = amount <= 0;
+  // Don't enable here — only 'ready' event enables it
+  if (amount <= 0) donateBtn.disabled = true;
 }
 
 function showError(message) {
@@ -97,31 +155,20 @@ donateBtn.addEventListener('click', async () => {
 
   if (amount < 1) { showError('Le montant minimum est de 1 €.'); return; }
   if (amount > 1000) { showError('Le montant maximum est de 1 000 €.'); return; }
+  if (!elements || !paymentElementReady) { showError('Veuillez patienter, le formulaire de paiement charge...'); return; }
 
   donateBtn.disabled = true;
   donateBtn.classList.add('donate-btn--loading');
 
   try {
-    // Create PaymentIntent on server
-    const res = await fetch('/api/create-payment-intent', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: Math.round(amount * 100) }),
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Erreur serveur.');
-
-    // Confirm payment with Stripe
     const { error } = await stripe.confirmPayment({
       elements,
-      clientSecret: data.clientSecret,
       confirmParams: {
         return_url: window.location.origin + '/success.html',
       },
     });
 
-    // If we get here, there was an error (success redirects automatically)
+    // If we reach here, there was an error (success redirects automatically)
     if (error) {
       showError(error.message);
     }
