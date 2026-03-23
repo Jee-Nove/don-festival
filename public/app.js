@@ -17,10 +17,10 @@ let selectedAmount = 5;
 const APPEARANCE = {
   theme: 'night',
   variables: {
-    colorPrimary: '#b026ff',
-    colorBackground: '#1a1a2e',
-    colorText: '#ffffff',
-    colorDanger: '#ff2d95',
+    colorPrimary: '#E63228',
+    colorBackground: '#1A1A1A',
+    colorText: '#FFF8F0',
+    colorDanger: '#E84C8A',
     borderRadius: '8px',
   },
 };

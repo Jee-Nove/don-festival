@@ -1,11 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
+
 :root {
-  --bg: #0a0a0f;
-  --bg-card: #12121f;
-  --bg-input: #1a1a2e;
-  --violet: #b026ff;
-  --magenta: #ff2d95;
-  --text: #ffffff;
-  --text-muted: #8888aa;
+  --red: #E63228;
+  --pink: #E84C8A;
+  --yellow: #F5D623;
+  --bg: #0A0A0A;
+  --bg-card: #1A1A1A;
+  --bg-input: #1A1A1A;
+  --text: #FFF8F0;
+  --text-muted: #BFB8AE;
   --radius: 12px;
 }
 
@@ -13,7 +16,7 @@
 html { font-size: 16px; -webkit-font-smoothing: antialiased; }
 
 body {
-  font-family: system-ui, 'Inter', -apple-system, sans-serif;
+  font-family: 'Quicksand', 'Nunito', system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100dvh;
@@ -41,21 +44,19 @@ body {
 }
 
 .header__title {
+  font-family: 'Quicksand', 'Nunito', system-ui, sans-serif;
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: linear-gradient(135deg, var(--violet), var(--magenta));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--red);
   margin-bottom: 8px;
 }
 
 .header__subtitle {
   font-size: 0.95rem;
-  color: var(--text-muted);
-  font-weight: 400;
+  color: var(--text);
+  font-weight: 500;
 }
 
 /* Card */
@@ -63,7 +64,7 @@ body {
   background: var(--bg-card);
   border-radius: 16px;
   padding: 28px 24px;
-  border: 1px solid rgba(176, 38, 255, 0.15);
+  border: 1px solid rgba(230, 50, 40, 0.2);
 }
 
 .card__label {
@@ -85,7 +86,7 @@ body {
 
 .amounts__btn {
   padding: 12px 8px;
-  border: 2px solid rgba(176, 38, 255, 0.25);
+  border: 2px solid var(--red);
   border-radius: var(--radius);
   background: transparent;
   color: var(--text);
@@ -98,20 +99,22 @@ body {
 }
 
 .amounts__btn:hover {
-  border-color: var(--violet);
-  box-shadow: 0 0 12px rgba(176, 38, 255, 0.2);
+  background: var(--pink);
+  border-color: var(--pink);
+  box-shadow: 0 0 12px rgba(232, 76, 138, 0.3);
 }
 
 .amounts__btn.active {
-  border-color: var(--violet);
-  background: rgba(176, 38, 255, 0.15);
-  box-shadow: 0 0 20px rgba(176, 38, 255, 0.3);
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--text);
+  box-shadow: 0 0 20px rgba(230, 50, 40, 0.4);
   animation: glowPulse 2s ease-in-out infinite;
 }
 
 @keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 16px rgba(176, 38, 255, 0.3); }
-  50% { box-shadow: 0 0 24px rgba(176, 38, 255, 0.5); }
+  0%, 100% { box-shadow: 0 0 16px rgba(230, 50, 40, 0.3); }
+  50% { box-shadow: 0 0 24px rgba(230, 50, 40, 0.5); }
 }
 
 /* Custom amount input */
@@ -123,7 +126,7 @@ body {
 .custom-amount__input {
   width: 100%;
   padding: 14px 40px 14px 16px;
-  border: 2px solid rgba(176, 38, 255, 0.25);
+  border: 2px solid var(--red);
   border-radius: var(--radius);
   background: var(--bg-input);
   color: var(--text);
@@ -134,8 +137,8 @@ body {
   transition: border-color 0.2s;
 }
 
-.custom-amount__input::placeholder { color: #555570; }
-.custom-amount__input:focus { border-color: var(--violet); }
+.custom-amount__input::placeholder { color: #665e55; }
+.custom-amount__input:focus { border-color: var(--yellow); }
 
 .custom-amount__currency {
   position: absolute;
@@ -164,8 +167,8 @@ body {
 .pe-spinner {
   width: 28px;
   height: 28px;
-  border: 3px solid rgba(176, 38, 255, 0.2);
-  border-top-color: var(--violet);
+  border: 3px solid rgba(230, 50, 40, 0.2);
+  border-top-color: var(--red);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
@@ -176,8 +179,8 @@ body {
   padding: 16px;
   border: none;
   border-radius: var(--radius);
-  background: linear-gradient(135deg, var(--violet), var(--magenta));
-  color: var(--text);
+  background: linear-gradient(135deg, var(--red), var(--pink));
+  color: #ffffff;
   font-family: inherit;
   font-size: 1rem;
   font-weight: 700;
@@ -188,12 +191,12 @@ body {
   overflow: hidden;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  box-shadow: 0 4px 20px rgba(176, 38, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(230, 50, 40, 0.3);
 }
 
 .donate-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(176, 38, 255, 0.5);
+  box-shadow: 0 8px 30px rgba(232, 76, 138, 0.5);
 }
 
 .donate-btn:active:not(:disabled) { transform: translateY(0); }
@@ -224,12 +227,12 @@ body {
 .error-msg {
   margin-top: 12px;
   padding: 10px 14px;
-  background: rgba(255, 45, 149, 0.1);
-  border: 1px solid rgba(255, 45, 149, 0.3);
+  background: rgba(232, 76, 138, 0.1);
+  border: 1px solid rgba(232, 76, 138, 0.3);
   border-radius: var(--radius);
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--magenta);
+  color: var(--pink);
   display: none;
 }
 
@@ -245,8 +248,8 @@ body {
 .info {
   margin-top: 20px;
   padding: 14px;
-  background: rgba(176, 38, 255, 0.05);
-  border: 1px solid rgba(176, 38, 255, 0.1);
+  background: rgba(230, 50, 40, 0.05);
+  border: 1px solid rgba(230, 50, 40, 0.12);
   border-radius: var(--radius);
   font-size: 0.8rem;
   line-height: 1.6;
@@ -258,7 +261,7 @@ body {
   text-align: center;
   margin-top: 20px;
   font-size: 0.75rem;
-  color: #555570;
+  color: var(--text-muted);
   line-height: 1.6;
 }
 
