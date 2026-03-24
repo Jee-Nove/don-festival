@@ -56,7 +56,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin: 1rem auto 1.5rem;
+  margin: 1rem auto 0;
   padding: 0.7rem 1.2rem;
   background: rgba(255, 248, 240, 0.04);
   border: 1px solid rgba(255, 248, 240, 0.08);
@@ -64,9 +64,14 @@ body {
   max-width: 380px;
 }
 
-.ladc-banner-text {
-  text-align: left;
+.logo-ladc {
+  width: 48px;
+  height: auto;
+  flex-shrink: 0;
+  border-radius: 8px;
 }
+
+.ladc-banner-text { text-align: left; }
 
 .ladc-title {
   font-size: 0.9rem;
@@ -78,9 +83,36 @@ body {
 
 .ladc-subtitle {
   font-size: 0.75rem;
-  color: #BFB8AE;
+  color: var(--text-muted);
   margin: 2px 0 0;
 }
+
+/* Express Checkout */
+#express-checkout-element {
+  margin-bottom: 0.5rem;
+  min-height: 0;
+}
+
+.separator {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin: 0.75rem 0;
+  position: relative;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 1px;
+  background: rgba(255, 248, 240, 0.15);
+}
+
+.separator::before { left: 0; }
+.separator::after { right: 0; }
 
 /* Card */
 .card {
@@ -173,33 +205,6 @@ body {
   color: var(--text-muted);
   pointer-events: none;
 }
-
-/* Express Checkout (Apple Pay / Google Pay) */
-#express-checkout-element {
-  margin-bottom: 0.5rem;
-  min-height: 48px;
-}
-
-.separator {
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  margin: 1rem 0;
-  position: relative;
-}
-
-.separator::before,
-.separator::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 30%;
-  height: 1px;
-  background: rgba(255, 248, 240, 0.15);
-}
-
-.separator::before { left: 0; }
-.separator::after { right: 0; }
 
 /* Payment Element container */
 #payment-element {
@@ -294,11 +299,16 @@ body {
   75% { transform: translateX(6px); }
 }
 
-.logo-ladc {
-  width: 48px;
-  height: auto;
-  flex-shrink: 0;
-  border-radius: 8px;
+/* Info */
+.info {
+  margin-top: 20px;
+  padding: 14px;
+  background: rgba(230, 50, 40, 0.05);
+  border: 1px solid rgba(230, 50, 40, 0.12);
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-muted);
 }
 
 /* Footer */
