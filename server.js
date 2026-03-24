@@ -40,7 +40,7 @@ app.post('/api/create-payment-intent', async (req, res) => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: 'eur',
-      payment_method_types: ['card'],
+      automatic_payment_methods: { enabled: true },
       metadata: {
         source: 'qr-code-festival',
         montant_euros: (amount / 100).toFixed(2),

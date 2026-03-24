@@ -51,10 +51,35 @@ body {
   height: auto;
 }
 
-.header__subtitle {
-  font-size: 0.95rem;
-  color: var(--text);
-  font-weight: 500;
+.ladc-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 1rem auto 1.5rem;
+  padding: 0.7rem 1.2rem;
+  background: rgba(255, 248, 240, 0.04);
+  border: 1px solid rgba(255, 248, 240, 0.08);
+  border-radius: 12px;
+  max-width: 380px;
+}
+
+.ladc-banner-text {
+  text-align: left;
+}
+
+.ladc-title {
+  font-size: 0.9rem;
+  color: #FFF8F0;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.ladc-subtitle {
+  font-size: 0.75rem;
+  color: #BFB8AE;
+  margin: 2px 0 0;
 }
 
 /* Card */
@@ -269,34 +294,11 @@ body {
   75% { transform: translateX(6px); }
 }
 
-/* LADC section */
-.ladc-section {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  background: rgba(255, 248, 240, 0.05);
-  border: 1px solid rgba(255, 248, 240, 0.1);
-  border-radius: 12px;
-  padding: 1rem 1.2rem;
-  margin-top: 1.5rem;
-}
-
 .logo-ladc {
-  width: 64px;
+  width: 48px;
   height: auto;
   flex-shrink: 0;
   border-radius: 8px;
-}
-
-.ladc-text {
-  font-size: 0.85rem;
-  color: #BFB8AE;
-  line-height: 1.5;
-  margin: 0;
-}
-
-.ladc-text strong {
-  color: #FFF8F0;
 }
 
 /* Footer */
