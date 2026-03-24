@@ -149,6 +149,33 @@ body {
   pointer-events: none;
 }
 
+/* Express Checkout (Apple Pay / Google Pay) */
+#express-checkout-element {
+  margin-bottom: 0.5rem;
+  min-height: 48px;
+}
+
+.separator {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 1px;
+  background: rgba(255, 248, 240, 0.15);
+}
+
+.separator::before { left: 0; }
+.separator::after { right: 0; }
+
 /* Payment Element container */
 #payment-element {
   margin-bottom: 20px;

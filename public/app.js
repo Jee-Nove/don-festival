@@ -1,6 +1,7 @@
 let stripe;
 let elements;
 let paymentElement;
+let expressCheckoutElement;
 let paymentElementReady = false;
 let debounceTimer = null;
 
@@ -11,6 +12,7 @@ const donateBtn = document.getElementById('donateBtn');
 const donateBtnText = donateBtn.querySelector('.donate-btn__text');
 const errorMsg = document.getElementById('errorMsg');
 const paymentElementDiv = document.getElementById('payment-element');
+const expressCheckoutDiv = document.getElementById('express-checkout-element');
 
 let selectedAmount = 5;
 
@@ -25,35 +27,33 @@ const APPEARANCE = {
   },
 };
 
-// Init Stripe (just load the key, don't create elements yet)
+// Init Stripe
 async function initStripe() {
   const res = await fetch('/api/config');
   const { publishableKey } = await res.json();
   stripe = Stripe(publishableKey);
-  // Mount Payment Element for the default selected amount
   mountPaymentElement(selectedAmount);
 }
 
 initStripe();
 
-// Create PaymentIntent + mount Payment Element for a given amount
+// Create PaymentIntent + mount both elements
 async function mountPaymentElement(amountEuros) {
   if (!stripe) return;
   if (amountEuros < 1 || amountEuros > 1000) return;
 
-  // Show loading state
   paymentElementReady = false;
   donateBtn.disabled = true;
   paymentElementDiv.innerHTML = '<div class="pe-loader"><div class="pe-spinner"></div></div>';
+  expressCheckoutDiv.innerHTML = '';
 
-  // Destroy previous elements
   if (elements) {
     elements = null;
     paymentElement = null;
+    expressCheckoutElement = null;
   }
 
   try {
-    // Create PaymentIntent on server
     const res = await fetch('/api/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -63,13 +63,44 @@ async function mountPaymentElement(amountEuros) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Erreur serveur.');
 
-    // Create new Elements with clientSecret
     elements = stripe.elements({
       clientSecret: data.clientSecret,
       appearance: APPEARANCE,
     });
 
-    paymentElement = elements.create('payment');
+    // Express Checkout (Apple Pay / Google Pay as prominent buttons)
+    expressCheckoutElement = elements.create('expressCheckout', {
+      buttonType: {
+        applePay: 'donate',
+        googlePay: 'donate',
+      },
+      buttonTheme: {
+        applePay: 'black',
+        googlePay: 'black',
+      },
+      layout: {
+        maxColumns: 1,
+        maxRows: 2,
+      },
+    });
+    expressCheckoutElement.mount('#express-checkout-element');
+
+    expressCheckoutElement.on('confirm', async () => {
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: window.location.origin + '/success.html',
+        },
+      });
+      if (error) {
+        showError(error.message);
+      }
+    });
+
+    // Payment Element (card fallback)
+    paymentElement = elements.create('payment', {
+      layout: 'tabs',
+    });
 
     paymentElement.on('ready', () => {
       paymentElementReady = true;
@@ -135,7 +166,6 @@ function getAmount() {
 function updateButtonText() {
   const amount = getAmount();
   donateBtnText.textContent = amount > 0 ? `Donner ${amount} €` : 'Donner';
-  // Don't enable here — only 'ready' event enables it
   if (amount <= 0) donateBtn.disabled = true;
 }
 
@@ -148,7 +178,7 @@ function hideError() {
   errorMsg.classList.remove('visible');
 }
 
-// Submit payment
+// Submit payment (card form)
 donateBtn.addEventListener('click', async () => {
   hideError();
   const amount = getAmount();
@@ -168,7 +198,6 @@ donateBtn.addEventListener('click', async () => {
       },
     });
 
-    // If we reach here, there was an error (success redirects automatically)
     if (error) {
       showError(error.message);
     }
@@ -180,5 +209,4 @@ donateBtn.addEventListener('click', async () => {
   donateBtn.classList.remove('donate-btn--loading');
 });
 
-// Init button state
 updateButtonText();
